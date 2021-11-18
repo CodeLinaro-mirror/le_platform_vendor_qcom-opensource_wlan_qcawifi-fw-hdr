@@ -452,6 +452,8 @@ typedef enum {
     WMI_PDEV_SET_HALPHY_CAL_BMAP_CMDID,
     /* Set ACK/CTS response rate. */
     WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID,
+    /* Command to Get VREG Error values used for ANI */
+    WMI_PDEV_GET_ANI_ERR_CMDID,
 
     /* VDEV (virtual device) specific commands */
     /** vdev create */
@@ -1513,6 +1515,8 @@ typedef enum {
     /* Event to set halphy cal bitmap */
     WMI_PDEV_SET_HALPHY_CAL_BMAP_EVENTID,
 
+    /* Event to Get VREG Error values used for ANI */
+    WMI_PDEV_GET_ANI_ERR_EVENTID,
 
     /* VDEV specific events */
     /** VDEV started event in response to VDEV_START request */
@@ -7290,6 +7294,30 @@ typedef enum {
      * by picking failing MPDUs from prior FES attempt.
      */
     WMI_PDEV_PARAM_DISABLE_HW_ASSIST,
+
+    /*
+     * Parameter used to set the TX to Rx switch over time
+     * HALPHY will configure this value into Vreg
+     */
+    WMI_PDEV_PARAM_TX_RX_SWITCH_OVER,
+
+    /*
+     * Parameter used to set the preamble power
+     * HALPHY will configure this value into Vreg
+     */
+    WMI_PDEV_PARAM_PREAMBLE_PWR,
+
+    /*
+     * Parameter used to set the stomper threshold
+     * HALPHY will configure this value into Vreg
+     */
+    WMI_PDEV_PARAM_STOMPER_THRSHOLD,
+
+    /*
+     * Parameter used to set the AGC Max Gain value
+     * HALPHY will configure this value into Vreg
+     */
+    WMI_PDEV_PARAM_AGC_GAIN_VALUE,
 
 } WMI_PDEV_PARAM;
 
@@ -28576,6 +28604,7 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_VDEV_IGMP_OFFLOAD_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_SET_HALPHY_CAL_BMAP_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID);
+        WMI_RETURN_STRING(WMI_PDEV_GET_ANI_ERR_CMDID);
     }
 
     return "Invalid WMI cmd";
@@ -31063,6 +31092,48 @@ typedef struct {
      */
     A_UINT32 status;
 } wmi_pdev_set_halphy_cal_bmap_evt_fixed_param;
+
+typedef struct {
+    A_UINT32 tlv_header;    /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param */
+    A_UINT32 pdev_id;       /* PDEV ID set by the command */
+
+} wmi_pdev_get_ani_err_cmd_fixed_param;
+
+typedef struct {
+    A_UINT32 tlv_header;    /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param */
+    A_UINT32 pdev_id;       /* PDEV Id set by the command */
+
+    /* number of RXTD OFDMA OTA error counts except power surge and drop */
+    A_UINT32 rx_ofdma_timing_err_cnt;
+
+    /* rx_cck_fail_cnt:
+     * number of cck error counts due to rx reception failure because of
+     * timing error in cck
+     */
+    A_UINT32 rx_cck_fail_cnt;
+
+    /* lsig_phy_err_cnt
+     * LSIG Error count per source;
+     */
+    A_UINT32 lsig_phy_err_cnt;
+
+    /* scaled_err:
+     * This error takes into account all the above errors (ofdm_timing_err, cck_err, lsig_phy_err),
+     * adds weightage to it and decides whether desense is necessary or not
+     */
+    A_UINT32 scaled_err;
+
+    /* Timestamp value when VREG error values are dumped
+     */
+    A_UINT32 timestamp_vreg;
+
+    /* Status indication
+     * 0 - Success
+     * 1 - Listen Time is small (Error)
+     * 2 - VREG values overflowed (Error)
+     */
+    A_UINT32 status;
+} wmi_pdev_get_ani_err_evt_fixed_param;
 
 /* below structures are related to Motion Detection. */
 typedef struct {

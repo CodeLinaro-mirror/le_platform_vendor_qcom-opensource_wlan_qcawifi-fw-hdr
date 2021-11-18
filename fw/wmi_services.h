@@ -533,6 +533,7 @@ typedef  enum  {
     WMI_SERVICE_11AX_TDLS_SUPPORT = 288, /* Indicates FW supports 11ax TDLS. Host should enable 11ax on TDLS only when FW indicates the support. */
     WMI_SERVICE_11BE = 289, /* Indicates FW supports 11be */
     WMI_SERVICE_HALPHY_CAL_ENABLE_DISABLE_SUPPORT = 290, /* Indicates Calibraton enable/disable support by FW */
+    WMI_SERVICE_HALPHY_ANI_ERROR_SUPPORT = 291, /* Indicates ANI VREG Errors support by FW */
 
 
     WMI_MAX_EXT2_SERVICE
