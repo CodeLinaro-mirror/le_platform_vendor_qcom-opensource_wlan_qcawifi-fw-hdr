@@ -7296,28 +7296,43 @@ typedef enum {
     WMI_PDEV_PARAM_DISABLE_HW_ASSIST,
 
     /*
-     * Parameter used to set the TX to Rx switch over time
-     * HALPHY will configure this value into Vreg
+     * Parameter used to set the TX to Rx switch over time 
+     * HALPHY will configure this value into Vreg 
      */
     WMI_PDEV_PARAM_TX_RX_SWITCH_OVER,
 
     /*
-     * Parameter used to set the preamble power
-     * HALPHY will configure this value into Vreg
+     * Parameter used to set the preamble power 
+     * HALPHY will configure this value into Vreg 
      */
     WMI_PDEV_PARAM_PREAMBLE_PWR,
 
     /*
      * Parameter used to set the stomper threshold
-     * HALPHY will configure this value into Vreg
+     * HALPHY will configure this value into Vreg 
      */
     WMI_PDEV_PARAM_STOMPER_THRSHOLD,
-
+    
     /*
-     * Parameter used to set the AGC Max Gain value
-     * HALPHY will configure this value into Vreg
+     * Parameter used to set the AGC Max Gain value 
+     * HALPHY will configure this value into Vreg 
      */
     WMI_PDEV_PARAM_AGC_GAIN_VALUE,
+
+   /*
+     * Per PDEV level, set the highest rate cap allowed.
+     * The accepted input values NSS are between 1-8, inclusive.
+     * The accepted input values MCS are between 0-15, inclusive.
+     * FW will use the input values as is.
+     * The rate cap is specified in NSS, MCS format each 4bits.
+     * i.e., NSS and MCS combined as shown below:
+     * b'0-b'7  indicate the NSS (NSS value can be from 1-8)
+     * b'8-b'15 indicate the MCS (MCS value can be from 0-15)
+     * b'16 Enable or disable nss cap
+     * b'17 Enable or disable mcs cap
+   */
+    WMI_PDEV_PARAM_RATE_UPPER_CAP = 0xd6,
+
 
 } WMI_PDEV_PARAM;
 
@@ -7377,6 +7392,15 @@ typedef enum {
     #define WMI_PDEV_OBSS_PD_ENABLE_PER_AC_GET(per_ac_cfg) WMI_GET_BITS(per_ac_cfg, 0, 4)
 #define WMI_PDEV_SRP_ENABLE_PER_AC_SET(per_ac_cfg, value) WMI_SET_BITS(per_ac_cfg, 16, 4, value)
     #define WMI_PDEV_SRP_ENABLE_PER_AC_GET(per_ac_cfg) WMI_GET_BITS(per_ac_cfg, 16, 4)
+
+#define WMI_PDEV_UPPER_CAP_NSS_GET(value) WMI_GET_BITS(value, 0, 8)
+#define WMI_PDEV_UPPER_CAP_NSS_SET(_value, value) WMI_SET_BITS(_value, 0, 8, value)
+#define WMI_PDEV_UPPER_CAP_MCS_GET(value) WMI_GET_BITS(value, 8, 8)
+#define WMI_PDEV_UPPER_CAP_MCS_SET(_value, value) WMI_SET_BITS(_value, 8, 8, value)
+#define WMI_PDEV_UPPER_CAP_NSS_VALID_GET(value) WMI_GET_BITS(value, 16, 1)
+#define WMI_PDEV_UPPER_CAP_NSS_VALID_SET(_value, value) WMI_SET_BITS(_value, 16, 1, value)
+#define WMI_PDEV_UPPER_CAP_MCS_VALID_GET(value) WMI_GET_BITS(value, 17, 1)
+#define WMI_PDEV_UPPER_CAP_MCS_VALID_SET(_value, value) WMI_SET_BITS(_value, 17, 1, value)
 
 typedef struct {
     A_UINT32 tlv_header; /** TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_pdev_set_param_cmd_fixed_param */
@@ -31119,7 +31143,7 @@ typedef struct {
 
     /* scaled_err:
      * This error takes into account all the above errors (ofdm_timing_err, cck_err, lsig_phy_err),
-     * adds weightage to it and decides whether desense is necessary or not
+     * adds weightage to it and decides whether desense is necessary or not 
      */
     A_UINT32 scaled_err;
 
@@ -31127,7 +31151,7 @@ typedef struct {
      */
     A_UINT32 timestamp_vreg;
 
-    /* Status indication
+    /* Status indication 
      * 0 - Success
      * 1 - Listen Time is small (Error)
      * 2 - VREG values overflowed (Error)
@@ -34276,15 +34300,15 @@ typedef struct {
     /** TLV tag and len; tag equals
     * WMITLV_TAG_STRUCT_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param */
     A_UINT32 tlv_header;
-
+    
     /** pdev_id for identifying the MAC
      * See macros starting with WMI_PDEV_ID_ for values.
      * In non-DBDC case host should set it to 0
      */
     A_UINT32 pdev_id;
-
+    
     WMI_ACK_CTS_RESP_RATE ack_cts_resp_rate;
-
+    
 } wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param;
 
 /* ADD NEW DEFS HERE */
