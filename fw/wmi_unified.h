@@ -7333,6 +7333,17 @@ typedef enum {
    */
     WMI_PDEV_PARAM_RATE_UPPER_CAP = 0xd6,
 
+    /*
+     * Parameter used to configure the lsig_rlsig_power_scaling
+     * PSD Boost value
+     */
+    WMI_PDEV_PARAM_LSIG_RLSIG_POWER_SCALING,
+
+    /*
+     * Parameter used to configure the he_siga_power_scaling
+     * PSD Boost value
+     */
+    WMI_PDEV_PARAM_HESIGA_POWER_SCALING,
 
 } WMI_PDEV_PARAM;
 
