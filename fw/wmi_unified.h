@@ -7345,6 +7345,8 @@ typedef enum {
      */
     WMI_PDEV_PARAM_HESIGA_POWER_SCALING,
 
+    WMI_PDEV_PARAM_EN_RU_106_TONE_ER_SU_DCM,
+
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
