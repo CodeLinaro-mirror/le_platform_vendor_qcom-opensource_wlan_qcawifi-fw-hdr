@@ -9278,6 +9278,7 @@ typedef struct
     A_UINT32 tlv_header; /** TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_peer_signal_stats */
     A_UINT32 vdev_id;
     A_UINT32 peer_id;
+    wmi_mac_addr peer_macaddr;
     /** per chain SNR in current bss, units are dB */
     A_INT32 per_chain_snr[WMI_MAX_CHAINS];
     /** per chain background noise, units are dBm */
@@ -9491,6 +9492,7 @@ typedef struct {
     A_UINT32 tlv_header; /** TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_report_stats_event_fixed_param */
     /** Indicate what triggered this event, check wmi_report_stats_event_trigger_cond_id for details */
     A_UINT32 trigger_cond_id;
+    A_UINT32 pdev_id;
     /** Bitmap to indicate changed channel CCA stats which exceeded the thresholds */
     A_UINT32 cca_chgd_bitmap;
     /** Bitmap to indicate changed peer signal stats which exceeded the thresholds */
