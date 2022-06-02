@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2010-2021 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -7345,8 +7346,12 @@ typedef enum {
      */
     WMI_PDEV_PARAM_HESIGA_POWER_SCALING,
 
+    /* parameter used to enable/disable RU 106 tone for ER SU
+    */
     WMI_PDEV_PARAM_EN_RU_106_TONE_ER_SU_DCM,
 
+    /* parameter used to configure the per pdev UL OFDMA RTD value */
+    WMI_PDEV_PARAM_UL_OFDMA_RTD,
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
@@ -14181,6 +14186,9 @@ typedef struct {
  * a parameter value 0f 0 will enable FW tx congestion control for the peer.
  */
 #define  WMI_PEER_PARAM_FW_CONGESTION_DISABLE           0x23
+
+/* Configure the per peer UL OFDMA RTD value */
+#define  WMI_PEER_PARAM_UL_OFDMA_RTD                    0x24
 
 /** mimo ps values for the parameter WMI_PEER_MIMO_PS_STATE  */
 #define WMI_PEER_MIMO_PS_NONE                          0x0
