@@ -5509,8 +5509,11 @@ typedef struct {
 #define WMI_TX_SEND_PARAM_PWR_GET(tx_param_dword0) WMI_GET_BITS(tx_param_dword0, 0, 8)
 #define WMI_TX_SEND_PARAM_PWR_SET(tx_param_dword0, value) WMI_SET_BITS(tx_param_dword0, 0, 8, value)
 
-#define WMI_TX_SEND_PARAM_MCS_MASK_GET(tx_param_dword0) WMI_GET_BITS(tx_param_dword0, 8, 12)
-#define WMI_TX_SEND_PARAM_MCS_MASK_SET(tx_param_dword0, value) WMI_SET_BITS(tx_param_dword0, 8, 12, value)
+#define WMI_TX_SEND_PARAM_BW_MASK_GET(tx_param_dword0) WMI_GET_BITS(tx_param_dword0, 8, 7)
+#define WMI_TX_SEND_PARAM_BW_MASK_SET(tx_param_dword0, value) WMI_SET_BITS(tx_param_dword0, 8, 7, value)
+
+#define WMI_TX_SEND_PARAM_PREAMBLE_GET(tx_param_dword0) WMI_GET_BITS(tx_param_dword0, 15, 5)
+#define WMI_TX_SEND_PARAM_PREAMBLE_SET(tx_param_dword0, value) WMI_SET_BITS(tx_param_dword0, 15, 5, value)
 
 #define WMI_TX_SEND_PARAM_NSS_MASK_GET(tx_param_dword0) WMI_GET_BITS(tx_param_dword0, 20, 8)
 #define WMI_TX_SEND_PARAM_NSS_MASK_SET(tx_param_dword0, value) WMI_SET_BITS(tx_param_dword0, 20, 8, value)
@@ -5521,17 +5524,26 @@ typedef struct {
 #define WMI_TX_SEND_PARAM_CHAIN_MASK_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 0, 8)
 #define WMI_TX_SEND_PARAM_CHAIN_MASK_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 0, 8, value)
 
-#define WMI_TX_SEND_PARAM_BW_MASK_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 8, 7)
-#define WMI_TX_SEND_PARAM_BW_MASK_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 8, 7, value)
+#define WMI_TX_SEND_PARAM_MCS_MASK_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 8, 14)
+#define WMI_TX_SEND_PARAM_MCS_MASK_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 8, 14, value)
 
-#define WMI_TX_SEND_PARAM_PREAMBLE_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 15, 5)
-#define WMI_TX_SEND_PARAM_PREAMBLE_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 15, 5, value)
+#define WMI_TX_SEND_PARAM_FRAME_TYPE_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 22, 1)
+#define WMI_TX_SEND_PARAM_FRAME_TYPE_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 22, 1, value)
 
-#define WMI_TX_SEND_PARAM_FRAME_TYPE_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 20, 1)
-#define WMI_TX_SEND_PARAM_FRAME_TYPE_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 20, 1, value)
+#define WMI_TX_SEND_PARAM_CFR_CAPTURE_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 23, 1)
+#define WMI_TX_SEND_PARAM_CFR_CAPTURE_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 23, 1, value)
 
-#define WMI_TX_SEND_PARAM_CFR_CAPTURE_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 21, 1)
-#define WMI_TX_SEND_PARAM_CFR_CAPTURE_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 21, 1, value)
+#define WMI_TX_SEND_PARAM_STBC_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 24, 1)
+#define WMI_TX_SEND_PARAM_STBC_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 24, 1, value)
+
+#define WMI_TX_SEND_PARAM_LDPC_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 25, 1)
+#define WMI_TX_SEND_PARAM_LDPC_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 25, 1, value)
+
+#define WMI_TX_SEND_PARAM_GI_MASK_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 26, 1)
+#define WMI_TX_SEND_PARAM_GI_MASK_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 26, 1, value)
+
+#define WMI_TX_SEND_PARAM_GI_VALUE_GET(tx_param_dword1) WMI_GET_BITS(tx_param_dword1, 27, 2)
+#define WMI_TX_SEND_PARAM_GI_VALUE_SET(tx_param_dword1, value) WMI_SET_BITS(tx_param_dword1, 27, 2, value)
 
 /* TX_SEND flags:
  * Bit 0: set wrong txkey
@@ -5561,47 +5573,32 @@ typedef struct {
                  */
                  pwr: 8,
 
-                /* mcs_mask -
-                 * Specify the allowable values for MCS index (modulation and coding)
-                 * to use for transmitting the frame.
-                 *
-                 * For HT / VHT preamble types, this mask directly corresponds to
-                 * the HT or VHT MCS indices that are allowed.  For each bit N set
-                 * within the mask, MCS index N is allowed for transmitting the frame.
-                 * For legacy CCK and OFDM rates, separate bits are provided for CCK
-                 * rates versus OFDM rates, so the host has the option of specifying
-                 * that the target must transmit the frame with CCK or OFDM rates
-                 * (not HT or VHT), but leaving the decision to the target whether
-                 * to use CCK or OFDM.
-                 *
-                 * For CCK and OFDM, the bits within this mask are interpreted as
-                 * follows:
-                 *     bit  0 -> CCK 1 Mbps rate is allowed
-                 *     bit  1 -> CCK 2 Mbps rate is allowed
-                 *     bit  2 -> CCK 5.5 Mbps rate is allowed
-                 *     bit  3 -> CCK 11 Mbps rate is allowed
-                 *     bit  4 -> OFDM BPSK modulation, 1/2 coding rate is allowed
-                 *     bit  5 -> OFDM BPSK modulation, 3/4 coding rate is allowed
-                 *     bit  6 -> OFDM QPSK modulation, 1/2 coding rate is allowed
-                 *     bit  7 -> OFDM QPSK modulation, 3/4 coding rate is allowed
-                 *     bit  8 -> OFDM 16-QAM modulation, 1/2 coding rate is allowed
-                 *     bit  9 -> OFDM 16-QAM modulation, 3/4 coding rate is allowed
-                 *     bit 10 -> OFDM 64-QAM modulation, 2/3 coding rate is allowed
-                 *     bit 11 -> OFDM 64-QAM modulation, 3/4 coding rate is allowed
-                 *
-                 * The MCS index specification needs to be compatible with the
-                 * bandwidth mask specification.  For example, a MCS index == 9
-                 * specification is inconsistent with a preamble type == VHT,
-                 * Nss == 1, and channel bandwidth == 20 MHz.
-                 *
-                 * Furthermore, the host has only a limited ability to specify to
-                 * the target to select from HT + legacy rates, or VHT + legacy rates,
-                 * since this mcs_mask can specify either HT/VHT rates or legacy rates.
-                 * If no bits are set, target can choose what MCS type to use.
+                /* The bits in this mask correspond to the values as below
+                 *     bit  0 -> 5MHz
+                 *     bit  1 -> 10MHz
+                 *     bit  2 -> 20MHz
+                 *     bit  3 -> 40MHz
+                 *     bit  4 -> 80MHz
+                 *     bit  5 -> 160MHz
+                 *     bit  6 -> 80_80MHz
+                 * If no bits are set, target can choose what BW to use.
                  */
-                 mcs_mask: 12,
+                bw_mask: 7,
 
-                /* nss_mask -
+                /* preamble_type_mask -
+                 * Specify which preamble types (CCK, OFDM, HT, VHT) the target
+                 * may choose from for transmitting this frame.
+                 * Each bit in this mask corresponds to a preamble_type value:
+                 *     bit 0: if set, OFDM
+                 *     bit 1: if set, CCK
+                 *     bit 2: if set, HT
+                 *     bit 3: if set, VHT
+                 *     bit 4: if set, HE
+                 * If no bits are set, target can choose what preamble type to use.
+                 */
+                preamble_type: 5,
+
+                /* ncs_mask -
                  * Specify which numbers of spatial streams (MIMO factor) are permitted.
                  * Each bit in this mask corresponds to a Nss value:
                  *     bit 0: if set, Nss = 1 (non-MIMO) is permitted
@@ -5644,30 +5641,48 @@ typedef struct {
                  */
                 chain_mask: 8,
 
-                /* The bits in this mask correspond to the values as below
-                 *     bit  0 -> 5MHz
-                 *     bit  1 -> 10MHz
-                 *     bit  2 -> 20MHz
-                 *     bit  3 -> 40MHz
-                 *     bit  4 -> 80MHz
-                 *     bit  5 -> 160MHz
-                 *     bit  6 -> 80_80MHz
-                 * If no bits are set, target can choose what BW to use.
+                /* mcs_mask -
+                 * Specify the allowable values for MCS index (modulation and coding)
+                 * to use for transmitting the frame.
+                 *
+                 * For HT / VHT preamble types, this mask directly corresponds to
+                 * the HT or VHT MCS indices that are allowed.  For each bit N set
+                 * within the mask, MCS index N is allowed for transmitting the frame.
+                 * For legacy CCK and OFDM rates, separate bits are provided for CCK
+                 * rates versus OFDM rates, so the host has the option of specifying
+                 * that the target must transmit the frame with CCK or OFDM rates
+                 * (not HT or VHT), but leaving the decision to the target whether
+                 * to use CCK or OFDM.
+                 *
+                 * For CCK and OFDM, the bits within this mask are interpreted as
+                 * follows:
+                 *     bit  0 -> CCK 1 Mbps rate is allowed  HT/VHT/HE
+                 *     bit  1 -> CCK 2 Mbps rate is allowed  HT/VHT/HE
+                 *     bit  2 -> CCK 5.5 Mbps rate is allowed  HT/VHT/HE
+                 *     bit  3 -> CCK 11 Mbps rate is allowed   HT/VHT/HE
+                 *     bit  4 -> OFDM BPSK modulation, 1/2 coding rate is allowed  HT/VHT/HE
+                 *     bit  5 -> OFDM BPSK modulation, 3/4 coding rate is allowed  HT/VHT/HE
+                 *     bit  6 -> OFDM QPSK modulation, 1/2 coding rate is allowed  HT/VHT/HE
+                 *     bit  7 -> OFDM QPSK modulation, 3/4 coding rate is allowed  HT/VHT/HE
+                 *     bit  8 -> OFDM 16-QAM modulation, 1/2 coding rate is allowed  VHT/HE
+                 *     bit  9 -> OFDM 16-QAM modulation, 3/4 coding rate is allowed  VHT/HE
+                 *     bit 10 -> OFDM 64-QAM modulation, 2/3 coding rate is allowed  VHT/HE
+                 *     bit 11 -> OFDM 64-QAM modulation, 3/4 coding rate is allowed  VHT/HE
+                 *     bit 12 -> HE Rate support
+                 *     bit 13 -> HE Rate support
+                 *
+                 * The MCS index specification needs to be compatible with the
+                 * bandwidth mask specification.  For example, a MCS index == 9
+                 * specification is inconsistent with a preamble type == VHT,
+                 * Nss == 1, and channel bandwidth == 20 MHz.
+                 *
+                 * Furthermore, the host has only a limited ability to specify to
+                 * the target to select from HT + legacy rates, or VHT + legacy rates,
+                 * since this mcs_mask can specify either HT/VHT rates or legacy rates.
+                 * If no bits are set, target can choose what MCS type to use.
                  */
-                bw_mask: 7,
+                 mcs_mask: 14,
 
-                /* preamble_type_mask -
-                 * Specify which preamble types (CCK, OFDM, HT, VHT) the target
-                 * may choose from for transmitting this frame.
-                 * Each bit in this mask corresponds to a preamble_type value:
-                 *     bit 0: if set, OFDM
-                 *     bit 1: if set, CCK
-                 *     bit 2: if set, HT
-                 *     bit 3: if set, VHT
-                 *     bit 4: if set, HE
-                 * If no bits are set, target can choose what preamble type to use.
-                 */
-                preamble_type: 5,
 
                 /* Data:1 Mgmt:0
                  */
@@ -5677,7 +5692,24 @@ typedef struct {
                  */
                 cfr_capture: 1,
 
-                reserved1_31_22: 10;
+                /* Enable:1 Disable:0 */
+                stbc_mask: 1,
+
+                /* Enable:1 Disable:0 */
+                ldpc_mask: 1,
+
+                /* Enable:1 Disable:0 */
+                gi_mask: 1,
+
+                /*
+                 *     0  00 -> WHAL_GI_800
+                 *     1  01 -> WHAL_GI_400
+                 *     2  10 -> WHAL_GI_1600
+                 *     3  11 -> WHAL_GI_3200
+                 */
+                gi_value: 2,
+
+                reserved1_31_29: 3;
         };
         A_UINT32 tx_param_dword1;
     };
