@@ -7384,6 +7384,9 @@ typedef enum {
 
     /* parameter used to configure the per pdev UL OFDMA RTD value */
     WMI_PDEV_PARAM_UL_OFDMA_RTD,
+
+    /* parameter used to configure the per pdev PREAMBLE_POWER_REMOVAL value */
+    WMI_PDEV_PARAM_PREAMBLE_POWER_REMOVAL,
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
