@@ -535,6 +535,8 @@ typedef  enum  {
     WMI_SERVICE_11BE = 289, /* Indicates FW supports 11be */
     WMI_SERVICE_HALPHY_CAL_ENABLE_DISABLE_SUPPORT = 290, /* Indicates Calibraton enable/disable support by FW */
     WMI_SERVICE_HALPHY_ANI_ERROR_SUPPORT = 291, /* Indicates ANI VREG Errors support by FW */
+    WMI_SERVICE_RTT_AP_INITIATOR_STAGGERED_MODE_SUPPORTED = 296, /* RTT AP mode initiator staggered mode support */
+    WMI_SERVICE_RTT_AP_INITIATOR_BURSTED_MODE_SUPPORTED = 297, /*RTT AP mode initiator bursted mode support */
     WMI_SERVICE_PDEV_RATE_CONFIG_SUPPORT = 317, /* Support rate configurations per PDEV */
     WMI_SERVICE_HALPHY_PSD_BOOST_SUPPORT = 318, /* Indicates PSD Boost support by FW */
     WMI_SERVICE_PDEV_UL_OFDMA_RTD_SUPPORT = 319, /* Indicates UL-OFDMA RTD configuration supported by FW */

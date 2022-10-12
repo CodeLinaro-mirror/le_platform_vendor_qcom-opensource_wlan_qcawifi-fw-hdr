@@ -1157,6 +1157,7 @@ typedef enum {
     WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_multiple_vdev_set_param_cmd_fixed_param,
 } WMITLV_TAG_ID;
 
 /*
@@ -1622,6 +1623,7 @@ typedef enum {
     OP(WMI_PDEV_SET_HALPHY_CAL_BMAP_CMDID) \
     OP(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID) \
     OP(WMI_PDEV_GET_ANI_ERR_CMDID) \
+    OP(WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID) \
     /* add new CMD_LIST elements above this line */
 
 
@@ -4676,6 +4678,12 @@ WMITLV_CREATE_PARAM_STRUC(WMI_MLO_TEARDOWN_CMDID);
     WMITLV_ELEM(id, op, buf, len, WMITLV_TAG_STRUC_wmi_igmp_offload_fixed_param, wmi_igmp_offload_fixed_param, fixed_param, WMITLV_SIZE_FIX) \
     WMITLV_ELEM(id, op, buf, len, WMITLV_TAG_ARRAY_FIXED_STRUC, WMI_IPV4_ADDR, mc_ipv4_list, WMITLV_SIZE_VAR)
 WMITLV_CREATE_PARAM_STRUC(WMI_VDEV_IGMP_OFFLOAD_CMDID);
+
+/* Multiple vdev set param cmd */
+#define WMITLV_TABLE_WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_multiple_vdev_set_param_cmd_fixed_param, wmi_pdev_multiple_vdev_set_param_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_ARRAY_UINT32, A_UINT32, vdev_ids, WMITLV_SIZE_VAR)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID);
 
 
 /************************** TLV definitions of WMI events *******************************/

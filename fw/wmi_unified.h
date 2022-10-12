@@ -455,6 +455,8 @@ typedef enum {
     WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID,
     /* Command to Get VREG Error values used for ANI */
     WMI_PDEV_GET_ANI_ERR_CMDID,
+    /* WMI cmd to send vdev param for multiple vdev */
+    WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID,
 
     /* VDEV (virtual device) specific commands */
     /** vdev create */
@@ -28687,6 +28689,7 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_PDEV_SET_HALPHY_CAL_BMAP_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_GET_ANI_ERR_CMDID);
+	WMI_RETURN_STRING(WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID);
     }
 
     return "Invalid WMI cmd";
@@ -34410,6 +34413,18 @@ typedef struct
     /** 1 to enable RX stats for this channel, 0 otherwise */
     A_UINT32 rx_stats;
 } wmi_ocb_channel_t;
+
+typedef struct {
+    A_UINT32 tlv_header; /** TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_pdev_multiple_vdev_set_param_cmd_fixed_param */
+    A_UINT32 pdev_id;
+    /** parameter id   */
+    A_UINT32 param_id;
+    /** parameter value */
+    A_UINT32 param_value;
+    /* The TLVs follows this structure:
+     * A_UINT32 vdev_ids[]; <--- Array of VDEV ids.
+     */
+} wmi_pdev_multiple_vdev_set_param_cmd_fixed_param;
 
 typedef struct {
     /** TLV tag and len; tag equals
