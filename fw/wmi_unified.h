@@ -1082,6 +1082,8 @@ typedef enum {
     WMI_GET_CHANNEL_ANI_CMDID,
     /** set OCL (One Chain Listen) mode */
     WMI_SET_OCL_CMDID,
+    /* H2T HPA message */
+    WMI_HPA_CMDID,
 
     /*  Offload 11k related requests */
     WMI_11K_OFFLOAD_REPORT_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_11K_OFFLOAD),
@@ -1960,6 +1962,9 @@ typedef enum {
 
     /** event to report ANI level of the channels */
     WMI_GET_CHANNEL_ANI_EVENTID,
+
+    /* T2H HPA message */
+    WMI_HPA_EVENTID,
 
     /* GPIO Event */
     WMI_GPIO_INPUT_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_GPIO),
@@ -28708,6 +28713,7 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_START_MEASURE_UL_RTD_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID);
+        WMI_RETURN_STRING(WMI_HPA_CMDID);
     }
 
     return "Invalid WMI cmd";
@@ -33131,6 +33137,39 @@ typedef struct {
     /** enable/disable OCL, 1 - enable, 0 - disable*/
     A_UINT32 en_dis_chain;
 } wmi_set_ocl_cmd_fixed_param;
+
+
+typedef enum {
+    /* HPA Handshake Stages */
+    WMI_HPA_SMCK_REQUEST = 0,
+    WMI_HPA_SMCK_RESPONSE = 1,
+    WMI_HPA_SIGN_REQUEST = 2,
+    WMI_HPA_SIGN_RESPONSE = 3,
+    WMI_HPA_HANDSHAKE_STAGE_MAX,
+} WMI_HPA_STAGE_TYPE;
+
+typedef struct {
+    A_UINT32 tlv_header; /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_hpa_cmd_fixed_param */
+    /* stage:
+     * HPA Handshake Stage, filled with a WMI_HPA_STAGE_TYPE enum value
+     */
+    A_UINT32 stage;
+
+    /* the base address and length of data on host memory */
+    A_UINT32 base_paddr_low;  /* bits 31:0 */
+    A_UINT32 base_paddr_high; /* bits 63:32 */
+    A_UINT32 len;             /* units = bytes */
+} wmi_hpa_cmd_fixed_param;
+
+typedef struct {
+    A_UINT32 tlv_header; /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_hpa_evt_fixed_param */
+    /* stage:
+     * HPA Handshake Stage, filled with a WMI_HPA_STAGE_TYPE enum value
+     */
+    A_UINT32 stage;
+
+    A_UINT32 nonce;
+} wmi_hpa_evt_fixed_param;
 
 typedef struct {
     A_UINT32 tlv_header; /** TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_audio_sync_qtimer */

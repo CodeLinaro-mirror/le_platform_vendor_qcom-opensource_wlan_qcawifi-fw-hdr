@@ -1161,6 +1161,8 @@ typedef enum {
     WMITLV_TAG_STRUC_wmi_pdev_start_measure_ul_rtd_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_event_fixed_param,
+    WMITLV_TAG_STRUC_wmi_hpa_cmd_fixed_param,
+    WMITLV_TAG_STRUC_wmi_hpa_evt_fixed_param,
 } WMITLV_TAG_ID;
 
 /*
@@ -1629,6 +1631,7 @@ typedef enum {
     OP(WMI_PDEV_MULTIPLE_VDEV_SET_PARAM_CMDID) \
     OP(WMI_PDEV_START_MEASURE_UL_RTD_CMDID) \
     OP(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID) \
+    OP(WMI_HPA_CMDID) \
     /* add new CMD_LIST elements above this line */
 
 
@@ -1897,6 +1900,7 @@ typedef enum {
     OP(WMI_PDEV_SET_HALPHY_CAL_BMAP_EVENTID) \
     OP(WMI_PDEV_GET_ANI_ERR_EVENTID) \
     OP(WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID) \
+    OP(WMI_HPA_EVENTID) \
     /* add new EVT_LIST elements above this line */
 
 
@@ -4701,6 +4705,12 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_START_MEASURE_UL_RTD_CMDID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_cmd_fixed_param, wmi_pdev_get_measured_ul_rtd_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID);
 
+/* HPA cmd */
+#define WMITLV_TABLE_WMI_HPA_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_hpa_cmd_fixed_param, wmi_hpa_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_ARRAY_UINT32, A_UINT32, data, WMITLV_SIZE_VAR)
+WMITLV_CREATE_PARAM_STRUC(WMI_HPA_CMDID);
+
 /************************** TLV definitions of WMI events *******************************/
 
 /* Service Ready event */
@@ -6341,6 +6351,11 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_ANI_ERR_EVENTID);
 #define WMITLV_TABLE_WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID(id,op,buf,len)  \
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_event_fixed_param, wmi_pdev_get_measured_ul_rtd_event_fixed_param, fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID);
+
+/* HPA Event */
+#define WMITLV_TABLE_WMI_HPA_EVENTID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_hpa_evt_fixed_param, wmi_hpa_evt_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_HPA_EVENTID);
 
 #ifdef __cplusplus
 }

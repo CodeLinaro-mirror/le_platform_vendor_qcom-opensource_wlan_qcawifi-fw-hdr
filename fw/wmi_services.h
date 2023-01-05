@@ -541,7 +541,7 @@ typedef  enum  {
     WMI_SERVICE_HALPHY_PSD_BOOST_SUPPORT = 318, /* Indicates PSD Boost support by FW */
     WMI_SERVICE_PDEV_UL_OFDMA_RTD_SUPPORT = 319, /* Indicates UL-OFDMA RTD configuration supported by FW */
     WMI_SERVICE_PEER_UL_RTD_ESTIMATE = 320, /* Indicates UL RTD window start config supported by FW */
-
+    WMI_SERVICE_HPA_SUPPORT = 360, /* Indicates HPA supported by FW */
     WMI_MAX_EXT2_SERVICE
 
 } WMI_SERVICE;
