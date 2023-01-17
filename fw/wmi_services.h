@@ -540,6 +540,7 @@ typedef  enum  {
     WMI_SERVICE_PDEV_RATE_CONFIG_SUPPORT = 317, /* Support rate configurations per PDEV */
     WMI_SERVICE_HALPHY_PSD_BOOST_SUPPORT = 318, /* Indicates PSD Boost support by FW */
     WMI_SERVICE_PDEV_UL_OFDMA_RTD_SUPPORT = 319, /* Indicates UL-OFDMA RTD configuration supported by FW */
+    WMI_SERVICE_PEER_UL_RTD_ESTIMATE = 320, /* Indicates UL RTD window start config supported by FW */
 
     WMI_MAX_EXT2_SERVICE
 
