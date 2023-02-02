@@ -7401,6 +7401,10 @@ typedef enum {
 
     /* parameter used to configure the per pdev PREAMBLE_POWER_REMOVAL value */
     WMI_PDEV_PARAM_PREAMBLE_POWER_REMOVAL,
+
+    /* parameter to configure the per pdev PRE_11AX_PACKET_REMOVAL value */
+    WMI_PDEV_PARAM_PRE_11AX_PACKET_REMOVAL,
+
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
