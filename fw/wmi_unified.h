@@ -10684,6 +10684,10 @@ typedef struct {
  *  If SW encryption is enabled, key plumbing will not happen in FW.
  */
 #define WMI_UNIFIED_VDEV_START_HW_ENCRYPTION_DISABLED  (1<<4)
+/*
+ * Indicates special AP broadcast is enabled.
+ */
+#define WMI_UNIFIED_VDEV_START_SPECIAL_AP_BCAST_ENABLED (1<<5)
 
 /* BSS color 0-6 */
 #define WMI_HEOPS_COLOR_GET_D2(he_ops) WMI_GET_BITS(he_ops, 0, 6)
