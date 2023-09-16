@@ -2708,6 +2708,8 @@ typedef struct {
     A_UINT32 sched_udp_notify2;
     A_UINT32 sched_nonudp_notify1;
     A_UINT32 sched_nonudp_notify2;
+    A_UINT32 remove_mpdu_ttl;
+    A_UINT32 remove_mpdu_ttl_cmd;
 } htt_tx_tqm_pdev_stats_tlv_v;
 
 #define HTT_TX_TQM_CMN_STATS_MAC_ID_M 0x000000ff
