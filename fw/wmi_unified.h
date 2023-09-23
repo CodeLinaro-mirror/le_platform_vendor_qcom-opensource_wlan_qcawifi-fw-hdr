@@ -2418,6 +2418,8 @@ typedef enum {
     WMI_MLO_LINK_SWITCH_REQUEST_EVENTID,
     /** Response event for WMI_MLO_PRIMARY_LINK_PEER_MIGRATION_CMDID */
     WMI_MLO_PRIMARY_LINK_PEER_MIGRATION_EVENTID,
+    /** WMI Event to spcify reason for link state switch */
+    WMI_MLO_LINK_STATE_SWITCH_EVENTID,
 
     /* WMI event specific to Quiet handling */
     WMI_QUIET_HANDLING_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_QUIET_OFL),
@@ -9307,6 +9309,9 @@ typedef enum {
      *   3.  Units are in milli-seconds
      */
     WMI_PDEV_PARAM_ATF_VI_DEDICATED_TIME,
+
+    /** Parameter used for enabling/disabling RFA toggle for SAP mode */
+    WMI_PDEV_PARAM_SET_SAP_RFA_TOGGLE,
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
@@ -34538,6 +34543,13 @@ typedef enum wmi_coex_config_type {
      * config BT RX PER threshold
      */
     WMI_COEX_CONFIG_BT_RX_PER_THRESHOLD = 49,
+    /* WMI_COEX_SET_TRAFFIC_SHAPING_MODE
+     * arg1: 0 (WMI_COEX_TRAFFIC_SHAPING_MODE_DISABLED)
+     *         Disable coex policies and set fixed arbitration config.
+     *       1 (WMI_COEX_TRAFFIC_SHAPING_MODE_ENABLED)
+     *         Enable all coex policies.
+     */
+    WMI_COEX_SET_TRAFFIC_SHAPING_MODE = 50,
 } WMI_COEX_CONFIG_TYPE;
 
 typedef struct {
@@ -34557,6 +34569,11 @@ typedef enum wmi_coex_dbam_mode_type {
     WMI_COEX_DBAM_ENABLE = 1,
     WMI_COEX_DBAM_FORCED = 2,
 } WMI_COEX_DBAM_MODE_TYPE;
+
+typedef enum {
+    WMI_COEX_TRAFFIC_SHAPING_MODE_DISABLED = 0,
+    WMI_COEX_TRAFFIC_SHAPING_MODE_ENABLED = 1,
+} WMI_COEX_TRAFFIC_SHAPING_MODE;
 
 typedef struct {
     A_UINT32 tlv_header;
@@ -44622,6 +44639,8 @@ typedef struct {
     A_UINT32 reason_code;
     /* trigger_umac_reset : of type A_BOOL to indicate the umac reset for the partner chip. */
     A_UINT32 trigger_umac_reset;
+    /* erp_standby_mode : of type A_BOOL to indicate the chip is going to be active in ERP */
+    A_UINT32 erp_standby_mode;
 } wmi_mlo_teardown_fixed_param;
 
 typedef struct {
@@ -46512,9 +46531,41 @@ typedef struct {
     A_UINT32 tlv_header;
 
     A_UINT32 vdev_id;
-    A_UINT32 status;  /*see definition of WMI_LINK_SWITCH_CNF_STATUS*/
-    A_UINT32 reason;  /*see definition of WMI_LINK_SWITCH_CNF_REASON*/
+    A_UINT32 status;  /* see definition of WMI_LINK_SWITCH_CNF_STATUS */
+    A_UINT32 reason;  /* see definition of WMI_LINK_SWITCH_CNF_REASON */
 } wmi_mlo_link_switch_cnf_fixed_param;
+
+typedef struct {
+    A_UINT32 tlv_header; /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_mlo_link_state_switch_req_evt_fixed_param */
+    A_UINT32 link_state_switch_count; /* Number of link state switch event pending, MAX 5 iteration */
+} wmi_mlo_link_state_switch_req_evt_fixed_param;
+
+typedef struct {
+    A_UINT32 tlv_header;               /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_mlo_link_state_switch_trigger_reason_tlv_param */
+    A_UINT32 cur_active_ieee_bitmap;   /* current active ieee linkbitmap */
+    A_UINT32 prev_active_ieee_bitmap;  /* previous active iee linkbitmap */
+    A_UINT32 host_ref_fw_timestamp_ms; /* fw time stamp on refrence of TIME_STAMP_SYNC_CMD */
+    A_UINT32 reason_code;              /* reason for link state switch trigger -
+                                        * refer to WMI_LINK_STATE_SWITCH_REASON
+                                        */
+    wmi_mac_addr  ml_bssid;  /* mac address of mld device */
+} wmi_mlo_link_state_switch_trigger_reason;
+
+typedef enum _WMI_LINK_STATE_SWITCH_REASON {
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_VDEV_READY = 0,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_ULL_MODE = 1,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_T2LM_ENABLED = 2,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_T2LM_DISABLED = 3,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_FORCE_ENABLED = 4,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_FORCE_DISABLED = 5,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_LINK_QUALITY = 6,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_LINK_CAPACITY = 7,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_RSSI = 8,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_BMISS = 9,
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_BT_STATUS = 10,
+
+    WMI_MLO_PS_LINK_STATE_SWITCH_REASON_MAX,
+} WMI_LINK_STATE_SWITCH_REASON;
 
 #define WMI_MLO_PRIMARY_LINK_PEER_MIGRATION_ML_PEER_ID_GET(new_link_info) WMI_GET_BITS(new_link_info, 0, 16)
 #define WMI_MLO_PRIMARY_LINK_PEER_MIGRATION_ML_PEER_ID_SET(new_link_info, value) WMI_SET_BITS(new_link_info, 0, 16, value)
