@@ -1632,6 +1632,9 @@ typedef enum {
     OP(WMI_PDEV_START_MEASURE_UL_RTD_CMDID) \
     OP(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID) \
     OP(WMI_HPA_CMDID) \
+    OP(WMI_VENDOR_PDEV_CMDID) \
+    OP(WMI_VENDOR_VDEV_CMDID) \
+    OP(WMI_VENDOR_PEER_CMDID) \
     /* add new CMD_LIST elements above this line */
 
 
@@ -1901,6 +1904,9 @@ typedef enum {
     OP(WMI_PDEV_GET_ANI_ERR_EVENTID) \
     OP(WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID) \
     OP(WMI_HPA_EVENTID) \
+    OP(WMI_VENDOR_PDEV_EVENTID) \
+    OP(WMI_VENDOR_VDEV_EVENTID) \
+    OP(WMI_VENDOR_PEER_EVENTID) \
     /* add new EVT_LIST elements above this line */
 
 
@@ -4711,6 +4717,21 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_ARRAY_UINT32, A_UINT32, data, WMITLV_SIZE_VAR)
 WMITLV_CREATE_PARAM_STRUC(WMI_HPA_CMDID);
 
+/* PDEV vendor cmd*/
+#define WMITLV_TABLE_WMI_VENDOR_PDEV_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_vendor_cmd_fixed_param, wmi_pdev_vendor_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_VENDOR_PDEV_CMDID);
+
+/* VDEV vendor cmd*/
+#define WMITLV_TABLE_WMI_VENDOR_VDEV_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_vdev_vendor_cmd_fixed_param, wmi_vdev_vendor_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_VENDOR_VDEV_CMDID);
+
+/* peer vendor cmd*/
+#define WMITLV_TABLE_WMI_VENDOR_PEER_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_peer_vendor_cmd_fixed_param, wmi_peer_vendor_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_VENDOR_PEER_CMDID);
+
 /************************** TLV definitions of WMI events *******************************/
 
 /* Service Ready event */
@@ -6356,6 +6377,21 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID);
 #define WMITLV_TABLE_WMI_HPA_EVENTID(id,op,buf,len) \
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_hpa_evt_fixed_param, wmi_hpa_evt_fixed_param, fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_HPA_EVENTID);
+
+/* PDEV vendor Event*/
+#define WMITLV_TABLE_WMI_VENDOR_PDEV_EVENTID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_vendor_event_fixed_param, wmi_pdev_vendor_event_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_VENDOR_PDEV_EVENTID);
+
+/* VDEV vendor Event*/
+#define WMITLV_TABLE_WMI_VENDOR_VDEV_EVENTID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_vdev_vendor_event_fixed_param, wmi_vdev_vendor_event_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_VENDOR_VDEV_EVENTID);
+
+/* PEER vendor Event*/
+#define WMITLV_TABLE_WMI_VENDOR_PEER_EVENTID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_peer_vendor_event_fixed_param, wmi_peer_vendor_event_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_VENDOR_PEER_EVENTID);
 
 #ifdef __cplusplus
 }
