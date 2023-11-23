@@ -28721,6 +28721,9 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_PDEV_START_MEASURE_UL_RTD_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID);
         WMI_RETURN_STRING(WMI_HPA_CMDID);
+        WMI_RETURN_STRING(WMI_VENDOR_PDEV_CMDID);
+        WMI_RETURN_STRING(WMI_VENDOR_VDEV_CMDID);
+        WMI_RETURN_STRING(WMI_VENDOR_PEER_CMDID);
     }
 
     return "Invalid WMI cmd";
@@ -34178,6 +34181,38 @@ typedef struct {
      * wmi_twt_session_stats_info twt_sessions[]; <--- Array of twt_session.
      */
 } wmi_pdev_twt_session_stats_event_fixed_param;
+
+/*Subtype for pdev vendor event*/
+typedef enum {
+    WMI_PDEV_VENDOR_EVT_PRIV_CSA = 0,
+    /*More vendor event will be added here when implememnt more private protocol features*/
+    WMI_PDEV_VENDOR_EVT_MAX,
+} WMI_PDEV_VENDOR_EVT_SUBTYPE;
+
+/*Subtype for vdev vendor event*/
+typedef enum {
+    WMI_VDEV_VENDOR_EVT_MAX,
+} WMI_VDEV_VENDOR_EVT_SUBTYPE;
+
+/*Subtype for peer vendor event*/
+typedef enum {
+    WMI_PEER_VENDOR_EVT_MAX,
+} WMI_PEER_VENDOR_EVT_SUBTYPE;
+
+/*Subtype for pdev vendor cmd*/
+typedef enum {
+    WMI_PDEV_VENDOR_CMD_MAX,
+} WMI_PDEV_VENDOR_CMD_SUBTYPE;
+
+/*Subtype for vdev vendor cmd*/
+typedef enum {
+    WMI_VEV_VENDOR_CMD_MAX,
+} WMI_VDEV_VENDOR_CMD_SUBTYPE;
+
+/*Subtype for peer vendor cmd*/
+typedef enum {
+    WMI_PEER_VENDOR_CMD_MAX,
+} WMI_PEER_VENDOR_CMD_SUBTYPE;
 
 typedef struct wmi_pdev_vendor_event
 {
