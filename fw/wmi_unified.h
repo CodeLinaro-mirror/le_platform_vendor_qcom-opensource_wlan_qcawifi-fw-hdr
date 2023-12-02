@@ -24182,6 +24182,7 @@ typedef enum {
     TSF_TSTAMP_CAPTURE_RESET = 2,
     TSF_TSTAMP_READ_VALUE = 3,
     TSF_TSTAMP_QTIMER_CAPTURE_REQ = 4,
+    TSF_TSTAMP_PERIODIC_REPORT_REQ = 5,
 } wmi_tsf_tstamp_action;
 
 typedef struct {
@@ -24192,7 +24193,16 @@ typedef struct {
     A_UINT32 vdev_id;
     /* action type, refer to wmi_tsf_tstamp_action */
     A_UINT32 tsf_action;
+    /* below fields are valid only when tsf_action is TSF_TSTAMP_PERIODIC_REPORT_REQ */
+    A_UINT32 period;
+    /* wmi_tsf_tstamp_report_flags */
+    A_UINT32 flags;
 } wmi_vdev_tsf_tstamp_action_cmd_fixed_param;
+
+typedef enum {
+    TSF_TSTAMP_REPORT_TTIMER = 0x01,   /* bit 0: TSF Timer */
+    TSF_TSTAMP_REPORT_QTIMER = 0x02,   /* bit 1: H/T common Timer */
+} wmi_tsf_tstamp_report_flags;
 
 typedef struct {
     /* TLV tag and len; tag equals
