@@ -544,6 +544,7 @@ typedef  enum  {
     WMI_SERVICE_HPA_SUPPORT = 360, /* Indicates HPA supported by FW */
     WMI_SERVICE_VDEV_PURE11AX_SUPPORT =361, /* Indicates pure 11AX supported by FW */
     WMI_SERVICE_DCM_ULOFDMA_SUPPORT = 362, /* Support for DCM for ULOFDMA Transmission */
+    WMI_SERVICE_PRIVATE_CSA_SUPPORT = 363, /* Support for private CSA */
 
     WMI_MAX_EXT2_SERVICE
 

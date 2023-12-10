@@ -24182,6 +24182,7 @@ typedef enum {
     TSF_TSTAMP_CAPTURE_RESET = 2,
     TSF_TSTAMP_READ_VALUE = 3,
     TSF_TSTAMP_QTIMER_CAPTURE_REQ = 4,
+    TSF_TSTAMP_PERIODIC_REPORT_REQ = 5,
 } wmi_tsf_tstamp_action;
 
 typedef struct {
@@ -24192,7 +24193,16 @@ typedef struct {
     A_UINT32 vdev_id;
     /* action type, refer to wmi_tsf_tstamp_action */
     A_UINT32 tsf_action;
+    /* below fields are valid only when tsf_action is TSF_TSTAMP_PERIODIC_REPORT_REQ */
+    A_UINT32 period;
+    /* wmi_tsf_tstamp_report_flags */
+    A_UINT32 flags;
 } wmi_vdev_tsf_tstamp_action_cmd_fixed_param;
+
+typedef enum {
+    TSF_TSTAMP_REPORT_TTIMER = 0x01,   /* bit 0: TSF Timer */
+    TSF_TSTAMP_REPORT_QTIMER = 0x02,   /* bit 1: H/T common Timer */
+} wmi_tsf_tstamp_report_flags;
 
 typedef struct {
     /* TLV tag and len; tag equals
@@ -28721,6 +28731,9 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_PDEV_START_MEASURE_UL_RTD_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID);
         WMI_RETURN_STRING(WMI_HPA_CMDID);
+        WMI_RETURN_STRING(WMI_VENDOR_PDEV_CMDID);
+        WMI_RETURN_STRING(WMI_VENDOR_VDEV_CMDID);
+        WMI_RETURN_STRING(WMI_VENDOR_PEER_CMDID);
     }
 
     return "Invalid WMI cmd";
@@ -34178,6 +34191,38 @@ typedef struct {
      * wmi_twt_session_stats_info twt_sessions[]; <--- Array of twt_session.
      */
 } wmi_pdev_twt_session_stats_event_fixed_param;
+
+/*Subtype for pdev vendor event*/
+typedef enum {
+    WMI_PDEV_VENDOR_EVT_PRIV_CSA = 0,
+    /*More vendor event will be added here when implememnt more private protocol features*/
+    WMI_PDEV_VENDOR_EVT_MAX,
+} WMI_PDEV_VENDOR_EVT_SUBTYPE;
+
+/*Subtype for vdev vendor event*/
+typedef enum {
+    WMI_VDEV_VENDOR_EVT_MAX,
+} WMI_VDEV_VENDOR_EVT_SUBTYPE;
+
+/*Subtype for peer vendor event*/
+typedef enum {
+    WMI_PEER_VENDOR_EVT_MAX,
+} WMI_PEER_VENDOR_EVT_SUBTYPE;
+
+/*Subtype for pdev vendor cmd*/
+typedef enum {
+    WMI_PDEV_VENDOR_CMD_MAX,
+} WMI_PDEV_VENDOR_CMD_SUBTYPE;
+
+/*Subtype for vdev vendor cmd*/
+typedef enum {
+    WMI_VEV_VENDOR_CMD_MAX,
+} WMI_VDEV_VENDOR_CMD_SUBTYPE;
+
+/*Subtype for peer vendor cmd*/
+typedef enum {
+    WMI_PEER_VENDOR_CMD_MAX,
+} WMI_PEER_VENDOR_CMD_SUBTYPE;
 
 typedef struct wmi_pdev_vendor_event
 {
