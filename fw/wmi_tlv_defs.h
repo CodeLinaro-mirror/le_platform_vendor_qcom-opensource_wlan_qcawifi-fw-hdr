@@ -1403,6 +1403,7 @@ typedef enum {
     WMITLV_TAG_STRUC_wmi_csa_event_status_ind_fixed_param,
     WMITLV_TAG_STRUC_wmi_mlo_link_state_switch_req_evt_fixed_param,
     WMITLV_TAG_STRUC_wmi_mlo_link_state_switch_trigger_reason_tlv_param,
+    WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param,
 } WMITLV_TAG_ID;
 /*
  * IMPORTANT: Please add _ALL_ WMI Commands Here.
@@ -1939,6 +1940,7 @@ typedef enum {
     OP(WMI_NAN_OEM_DATA_CMDID) \
     OP(WMI_PDEV_WSI_STATS_INFO_CMDID) \
     OP(WMI_CSA_EVENT_STATUS_INDICATION_CMDID) \
+    OP(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID) \
     /* add new CMD_LIST elements above this line */
 
 
@@ -5477,6 +5479,10 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_WSI_STATS_INFO_CMDID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_csa_event_status_ind_fixed_param ,  wmi_csa_event_status_ind_fixed_param,fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_CSA_EVENT_STATUS_INDICATION_CMDID);
 
+/* Set ACK/CTS response rate */
+#define WMITLV_TABLE_WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param, wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID);
 
 
 /************************** TLV definitions of WMI events *******************************/
