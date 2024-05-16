@@ -3647,6 +3647,11 @@ typedef struct {
     A_UINT32 ofdma_tx_gi[HTT_TX_PDEV_STATS_NUM_GI_COUNTERS][HTT_TX_PDEV_STATS_NUM_MCS_COUNTERS];
     A_UINT32 trigger_type_11ax[HTT_TX_PDEV_STATS_NUM_11AX_TRIGGER_TYPES];
     A_UINT32 tx_11ax_su_ext;
+    A_UINT32 dlofdma_disabled_consec_no_mpdus_tried[HTT_NUM_AC_WMM];
+    A_UINT32 dlofdma_disabled_consec_no_mpdus_success[HTT_NUM_AC_WMM];
+    A_UINT32 dl_cand_list_dropped_high_ul_qos_weight[HTT_NUM_AC_WMM];
+    A_UINT32 ax_dlofdma_disabled_due_to_pipelining[HTT_NUM_AC_WMM];
+    A_UINT32 downgrade_to_dl_su_ru_alloc_fail[HTT_NUM_AC_WMM];
 
     /* Stats for MCS 12/13 */
     A_UINT32 tx_mcs_ext[HTT_TX_PDEV_STATS_NUM_EXTRA_MCS_COUNTERS];
