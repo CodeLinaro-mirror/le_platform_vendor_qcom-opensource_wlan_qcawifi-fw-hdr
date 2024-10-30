@@ -1433,10 +1433,10 @@ typedef enum {
     WMITLV_TAG_STRUC_wmi_reg_chan_list_cc_event_ext2_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param,
-    WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_start_measure_ul_rtd_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_event_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param,
 } WMITLV_TAG_ID;
 /*
  * IMPORTANT: Please add _ALL_ WMI Commands Here.

@@ -41134,7 +41134,7 @@ typedef struct {
     /* Set pdev id */
     A_UINT32 pdev_id;
     wmi_mac_addr peer_macaddr;
-    A_UINT8 start_win; /* start window for specified peer mac <0/1>*/
+    A_UINT32 start_win; /* start window for specified peer mac <0/1>*/
 } wmi_pdev_start_measure_ul_rtd_cmd_fixed_param;
 
 typedef struct {
