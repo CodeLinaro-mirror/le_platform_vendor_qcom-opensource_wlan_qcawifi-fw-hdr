@@ -5661,8 +5661,6 @@ typedef struct {
     A_UINT32 be_ul_ofdma_rx_stbc;
     A_UINT32 be_ul_ofdma_rx_ldpc;
     A_UINT32 be_rx_dcm_ulofdma_status[HTT_TX_PDEV_STATS_NUM_TX_ERR_STATUS];
-    A_UINT32 be_ul_ofdma_rx_mcs_ext_2[HTT_RX_PDEV_STATS_NUM_EXTRA2_MCS_COUNTERS];
-    A_UINT32 be_ul_ofdma_rx_gi_ext_2[HTT_TX_PDEV_STATS_NUM_GI_COUNTERS][HTT_RX_PDEV_STATS_NUM_EXTRA2_MCS_COUNTERS];
 
     /*
      * These are arrays to hold the number of PPDUs that we received per RU.
