@@ -1002,6 +1002,7 @@ typedef enum {
 #define HTT_TX_HWQ_MAX_CMD_STALL_STATS 5
 #define HTT_TX_HWQ_MAX_FES_RESULT_STATS 10
 #define HTT_PDEV_STATS_PPDU_DUR_HIST_BINS 16
+#define HTT_PDEV_STATS_PPDU_DUR_HIST_EXT_BINS 6
 #define HTT_PDEV_STATS_PPDU_DUR_HIST_INTERVAL_US 250
 
 typedef enum {
@@ -4781,6 +4782,19 @@ typedef struct {
     A_UINT32 g1_compl_fail;
     A_UINT32 g2_success;
     A_UINT32 g2_compl_fail;
+    /* enqueue */
+    A_UINT32 m1_enq_success;
+    A_UINT32 m1_enq_fail;
+    A_UINT32 m2_enq_success;
+    A_UINT32 m2_enq_fail;
+    A_UINT32 m3_enq_success;
+    A_UINT32 m3_enq_fail;
+    A_UINT32 m4_enq_success;
+    A_UINT32 m4_enq_fail;
+    A_UINT32 g1_enq_success;
+    A_UINT32 g1_enq_fail;
+    A_UINT32 g2_enq_success;
+    A_UINT32 g2_enq_fail;
 } htt_stats_tx_de_eapol_packets_tlv;
 /* preserve old name alias for new name consistent with the tag name */
 typedef htt_stats_tx_de_eapol_packets_tlv htt_tx_de_eapol_packets_stats_tlv;
@@ -5900,6 +5914,8 @@ typedef struct {
     /** tx_ppdu_dur_hist:
      * Tx PPDU duration histogram, which holds the tx duration of PPDUs
      * under histogram bins of interval 250us
+     *
+     * Note that this histogram is extended by tx_ppdu_dur_hist_ext[] below.
      */
     A_UINT32 tx_ppdu_dur_hist[HTT_PDEV_STATS_PPDU_DUR_HIST_BINS];
     A_UINT32 tx_success_time_us_low;
@@ -5913,6 +5929,11 @@ typedef struct {
      * OFDMA PPDUs under histogram bins of interval 250us
      */
     A_UINT32 tx_ofdma_ppdu_dur_hist[HTT_PDEV_STATS_PPDU_DUR_HIST_BINS];
+    /* tx_ppdu_dur_hist_ext:
+     * This array extends the PPDU duration histogram contained in the
+     * tx_ppdu_dur_hist[] array from 4 ms to 5.5 ms.
+     */
+    A_UINT32 tx_ppdu_dur_hist_ext[HTT_PDEV_STATS_PPDU_DUR_HIST_EXT_BINS];
 } htt_stats_tx_pdev_ppdu_dur_tlv;
 /* preserve old name alias for new name consistent with the tag name */
 typedef htt_stats_tx_pdev_ppdu_dur_tlv htt_tx_pdev_ppdu_dur_stats_tlv;
@@ -8122,6 +8143,8 @@ typedef struct {
 
     A_UINT32 ru_type; /* refer to htt_stats_ru_type enum */
     htt_tx_rate_stats_t per_ru[HTT_TX_PDEV_STATS_NUM_BE_RU_SIZE_COUNTERS];
+
+    htt_tx_rate_stats_t per_tx_su_punctured_mode[HTT_TX_PDEV_STATS_NUM_PUNCTURED_MODE_COUNTERS];
 } htt_stats_per_rate_stats_tlv;
 /* preserve old name alias for new name consistent with the tag name */
 typedef htt_stats_per_rate_stats_tlv htt_tx_rate_stats_per_tlv;

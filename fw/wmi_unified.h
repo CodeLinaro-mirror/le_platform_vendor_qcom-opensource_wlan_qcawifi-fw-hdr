@@ -1601,6 +1601,7 @@ typedef enum {
     WMI_NDP_RESPONDER_REQ_CMDID,
     WMI_NDP_END_REQ_CMDID,
     WMI_NDP_CMDID,
+    WMI_NDP_SET_LATENCY_TPUT_CMDID,
 
     /** WMI commands related to HW data filtering **/
     WMI_HW_DATA_FILTER_CMDID = WMI_CMD_GRP_START_ID(WMI_GRP_HW_DATA_FILTER),
@@ -4958,7 +4959,17 @@ typedef struct {
      *      So FW will start refilling the buffers.
      *      Refer to the below definitions of WMI_RSRC_CFG_HOST_SERVICE_FLAG
      *      OPT_DP_CTRL_REPLENISH_REFILL_RX_BUFFER_SUPPORT_GET and _SET macros.
-     *  Bits 31:18 - Reserved
+     *  Bit 18
+     *      This bit will be set by host to inform FW that VBSS feature is
+     *      enabled.
+     *  Bit 19
+     *      This bit will set by host to inform FW that the bypass approach
+     *      for HLOS TID OVERRIDE feature not working needs to be supported,
+     *      So FW will start handling the PPE2TCL enqueued packets with
+     *      flow_override set.
+     *      Refer to the below definitions of WMI_RSRC_CFG_HOST_SERVICE_FLAG
+     *      OPT_DP_ENABLE_BYPASS_FOR_HLOS_TID_OVERRIDE_GET and _SET macros.
+     *  Bits 31:20 - Reserved
      */
     A_UINT32 host_service_flags;
 
@@ -5476,6 +5487,18 @@ typedef struct {
 #define WMI_RSRC_CFG_HOST_SERVICE_FLAG_VBSS_ENABLED_SET(host_service_flags, val) \
         WMI_SET_BITS(host_service_flags, 18, 1, val)
 
+/*
+ * This bit is to inform that we need to enable the bypass approach
+ * (for HLOS TID override feature not working in the target)
+ * to handle flowq creation from FW when flow override is set and
+ * frames are recvd from PPE2TCL.
+ * */
+#define WMI_RSRC_CFG_HOST_SERVICE_FLAG_OPT_DP_ENABLE_BYPASS_FOR_HLOS_TID_OVERRIDE_GET(host_service_flags) \
+        WMI_GET_BITS(host_service_flags, 19, 1)
+#define WMI_RSRC_CFG_HOST_SERVICE_FLAG_OPT_DP_ENABLE_BYPASS_FOR_HLOS_TID_OVERRIDE_SET(host_service_flags, val) \
+        WMI_SET_BITS(host_service_flags, 19, 1, val)
+
+
 #define WMI_RSRC_CFG_CARRIER_CFG_CHARTER_ENABLE_GET(carrier_config) \
     WMI_GET_BITS(carrier_config, 0, 1)
 #define WMI_RSRC_CFG_CARRIER_CFG_CHARTER_ENABLE_SET(carrier_config, val) \
@@ -5548,6 +5571,7 @@ typedef enum {
     WMI_VENDOR1_REQ1_VERSION_4_00   = 5,
     WMI_VENDOR1_REQ1_VERSION_4_10   = 6,
     WMI_VENDOR1_REQ1_VERSION_4_20   = 7,
+    WMI_VENDOR1_REQ1_VERSION_4_40   = 8,
 } WMI_VENDOR1_REQ1_VERSION;
 
 typedef enum {
@@ -17049,6 +17073,8 @@ typedef struct {
 #define WMI_MLO_FLAGS_SET_IEEE_LINK_ID_VALID(mlo_flags, value) WMI_SET_BITS(mlo_flags, 18, 1, value)
 #define WMI_MLO_FLAGS_GET_IEEE_LINK_ID_VALID_PARTNER(mlo_flags)        WMI_GET_BITS(mlo_flags, 19, 1)
 #define WMI_MLO_FLAGS_SET_IEEE_LINK_ID_VALID_PARTNER(mlo_flags, value) WMI_SET_BITS(mlo_flags, 19, 1, value)
+#define WMI_MLO_FLAGS_GET_SINGLE_LINK_EMLSR_EN(mlo_flags)              WMI_GET_BITS(mlo_flags, 20, 1)
+#define WMI_MLO_FLAGS_SET_SINGLE_LINK_EMLSR_EN(mlo_flags, value)       WMI_SET_BITS(mlo_flags, 20, 1, value)
 
 /* this structure used for passing MLO flags */
 typedef struct {
@@ -17080,7 +17106,8 @@ typedef struct {
                      start_as_active:1, /* indicate link should be started in active status */
                      mlo_ieee_link_id_valid:1, /* indicate if the ieee_link_id in wmi_vdev_start_mlo_params is valid */
                      mlo_ieee_link_id_valid_partner:1, /* indicate if the ieee_link_id in wmi_partner_link_params is valid */
-                     unused: 12;
+                     single_link_emlsr_en:1, /* indicate if emlsr enablement on one link is supported */
+                     unused: 11;
         };
         A_UINT32 mlo_flags;
     };
@@ -23176,7 +23203,10 @@ typedef struct {
      *  Refer WLAN_ROAM_SCORE_MAX_BAND_INDEX for possible band_idx values.
      */
     A_UINT32 band_idx;
-    /** Below RSSI/CU factor_value & factor_score param values are configured by vendor */
+    /**
+     * The below band weight (2.4 GHz, 5 GHz, 6 GHz), RSSI, and CU factor_value
+     * and factor_score param values are configured by vendor.
+     */
     A_UINT32 rssi_factor_value1;
     A_UINT32 rssi_factor_value2;
     A_UINT32 rssi_factor_value3;
@@ -23191,6 +23221,9 @@ typedef struct {
     A_UINT32 cu_factor_value2;
     A_UINT32 cu_factor_score1;
     A_UINT32 cu_factor_score2;
+    A_UINT32 band_weight_2GHz;
+    A_UINT32 band_weight_5GHz;
+    A_UINT32 band_weight_6GHz;
 } wmi_roam_cnd_vendor_scoring_param;
 
 /** Support early stop roaming scanning when finding a strong candidate AP
@@ -28459,6 +28492,12 @@ typedef enum {
     WMI_PEER_IND_OMI,        /* operating mode indication */
 } WMI_PEER_OPER_MODE_IND;
 
+
+#define WMI_EHT_PEER_PARAMS_MCS_DISABLE_GET(eht_peer_params) \
+    WMI_GET_BITS(eht_peer_params, 0, 1)
+#define WMI_EHT_PEER_PARAMS_MCS_DISABLE_SET(eht_peer_params, value) \
+    WMI_SET_BITS(eht_peer_params, 0, 1, value)
+
 typedef struct {
     /** TLV tag and len; tag equals
      *  WMITLV_TAG_STRUC_wmi_peer_oper_mode_change */
@@ -28480,6 +28519,12 @@ typedef struct {
      *  valid for peer_operating mode ind. OMI
      */
     A_UINT32 new_disablemu;
+    /** eht_peer_params
+     * bit 0        - eht_mcs15_disable, refer to
+     *                WMI_EHT_PEER_PARAMS_MCS_DISABLE_GET,SET macros
+     * bits 1 to 31 - reserved
+     */
+    A_UINT32 eht_peer_params;
 } wmi_peer_oper_mode_change_event_fixed_param;
 
 /** FW response when tx failure count has reached threshold
@@ -29477,6 +29522,21 @@ typedef struct {
 } wmi_ndp_cmd_param_PROTOTYPE;
 
 #define wmi_ndp_cmd_param wmi_ndp_cmd_param_PROTOTYPE
+
+typedef struct {
+    /** TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_ndp_set_latency_tput_fixed_param */
+    A_UINT32 tlv_header;
+    /** NDP instance id */
+    A_UINT32 ndp_instance_id;
+    /** NDI VDEV ID */
+    A_UINT32 vdev_id;
+    /** latency reqirement */
+    A_UINT32 latency_ms;
+    /** throughput requirement */
+    A_UINT32 tput_mbps;
+} wmi_ndp_set_latency_tput_fixed_param_PROTOTYPE;
+
+#define wmi_ndp_set_latency_tput_fixed_param wmi_ndp_set_latency_tput_fixed_param_PROTOTYPE
 
 /**
  * NDP End request
@@ -37770,6 +37830,9 @@ typedef enum {
     WMI_THERMAL_CLIENT_APPS        = 1,
     WMI_THERMAL_CLIENT_WPSS        = 2,
     WMI_THERMAL_CLIENT_FW          = 3,
+    /* WMI_THERMAL_CLIENT_DDR_BWM: client is for DDR bandwidth mitigation */
+    WMI_THERMAL_CLIENT_DDR_BWM     = 4,
+
     WMI_THERMAL_CLIENT_MAX
 } WMI_THERMAL_MITIGATION_CLIENTS;
 
@@ -38701,6 +38764,7 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_MLO_LINK_RECONFIG_COMPLETE_CMDID);
         WMI_RETURN_STRING(WMI_SAWF_EZMESH_HOP_COUNT_CMDID);
         WMI_RETURN_STRING(WMI_VDEV_VBSS_CONFIG_CMDID);
+        WMI_RETURN_STRING(WMI_NDP_SET_LATENCY_TPUT_CMDID);
     }
 
     return (A_UINT8 *) "Invalid WMI cmd";
@@ -46699,6 +46763,7 @@ typedef enum {
     WMI_MLO_LINK_FORCE_REASON_TDLS             = 4, /* Set force specific links because of 11BE MLO TDLS setup/teardown */
     WMI_MLO_LINK_FORCE_REASON_REVERT_FAILURE   = 5, /* Set force specific links for revert previous failed due to host reject */
     WMI_MLO_LINK_FORCE_REASON_LINK_DELETE      = 6, /* Set force specific links because link is deleted from associated link set */
+    WMI_MLO_LINK_FORCE_REASON_SINGLE_LINK_EMLSR_OP = 7, /* Set force specific links because single link eMLSR operation */
 } WMI_MLO_LINK_FORCE_REASON;
 
 #define WMI_MLO_CONTROL_FLAGS_GET_OVERWRITE_FORCE_ACTIVE(mlo_flags) \
@@ -49811,7 +49876,10 @@ typedef struct {
 } wmi_mlo_link_del_param;
 
 typedef enum {
-    WMI_EVENT_POWER_BOOST_START_TRAINING = 0,
+    WMI_EVENT_POWER_BOOST_START_INFERENCING = 0,
+        /* alias */
+        WMI_EVENT_POWER_BOOST_START_TRAINING =
+            WMI_EVENT_POWER_BOOST_START_INFERENCING,
     WMI_EVENT_POWER_BOOST_ABORT,
     WMI_EVENT_POWER_BOOST_COMPLETE,
 
@@ -49824,6 +49892,8 @@ typedef enum {
 
     WMI_PDEV_POWER_BOOST_TS_MAX
 } wmi_pdev_power_boost_training_stage;
+typedef wmi_pdev_power_boost_training_stage
+    wmi_pdev_power_boost_inferencing_stage; /* alias */
 
 typedef struct {
     /* WMITLV_TAG_STRUC_wmi_pdev_power_boost_event_fixed_param */
@@ -49832,11 +49902,14 @@ typedef struct {
     A_UINT32 pdev_id;
     /* enum wmi_pdev_power_boost_event_type to update the power boost status */
     A_UINT32 status;
-    /* training_stage:
-     * The training stage for which the I/Q samples are updated in DDR.
-     * This field holds a wmi_pdev_power_boost_training_stage value.
+    /* inferencing_stage:
+     * The inferencing stage for which the I/Q samples are updated in DDR.
+     * This field holds a wmi_pdev_power_boost_inferencing_stage value.
      */
-    A_UINT32 training_stage;
+    union {
+        A_UINT32 training_stage;    /* deprecated name */
+        A_UINT32 inferencing_stage; /* preferred name */
+    };
     /* MCS value for which the current DPD training has been done */
     A_UINT32 mcs;
     /* bandwidth:
@@ -49878,8 +49951,14 @@ typedef struct {
     A_UINT32 pdev_id;
     /* enum wmi_pdev_power_boost_cmd_type to update the power boost status */
     A_UINT32 status;
-    /* wmi_pdev_power_boost_training_stage value to indicate training stage */
-    A_UINT32 training_stage;
+    /*
+     * wmi_pdev_power_boost_inferencing_stage value to indicate
+     * inferencing stage
+     */
+    union {
+        A_UINT32 training_stage;    /* deprecated name */
+        A_UINT32 inferencing_stage; /* preferred name */
+    };
     /* MCS value for which the Power Boost training has been done */
     A_UINT32 mcs;
     /* Bandwidth in Mhz for which the Power Boost training has been done */
@@ -50096,8 +50175,9 @@ typedef struct {
 } wmi_vdev_vbss_peer_sn_info;
 
 typedef enum {
-    WMI_VBSS_GET_PEER_CONTEXT = 0x1,
-    WMI_VBSS_SET_PEER_CONTEXT = 0x2,
+    WMI_VBSS_GET_PEER_CONTEXT        = 1,
+    WMI_VBSS_SET_PEER_CONTEXT        = 2,
+    WMI_VBSS_RX_SUSPEND_PEER_CONTEXT = 3,
 } wmi_vbss_action;
 
 #define WMI_VDEV_VBSS_GET_ACTION(action) WMI_GET_BITS(action, 0, 4)
