@@ -10024,6 +10024,8 @@ typedef enum {
     WMI_PDEV_PARAM_LSIG_RLSIG_POWER_SCALING,
     WMI_PDEV_PARAM_HESIGA_POWER_SCALING,
     WMI_PDEV_PARAM_PREAMBLE_POWER_REMOVAL,
+    /* Parameter used to enable/disable pre_11ax_packet_removal */
+    WMI_PDEV_PARAM_PRE_11AX_PACKET_REMOVAL,
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
@@ -19473,6 +19475,8 @@ typedef enum {
 
     /* Set Chanbw param */
     WMI_VDEV_PARAM_CHANBW_SET,                           /* 0xc9 */
+
+    WMI_VDEV_PARAM_PURE_11AX_MODE,                       /* 0xCA */
 
     /*=== ADD NEW VDEV PARAM TYPES ABOVE THIS LINE ===
      * The below vdev param types are used for prototyping, and are
