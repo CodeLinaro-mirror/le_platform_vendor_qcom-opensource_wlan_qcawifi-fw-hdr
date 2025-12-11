@@ -1482,6 +1482,8 @@ typedef enum {
     WMITLV_TAG_STRUC_wmi_ctrl_path_sta_dar_stats_struct,
     WMITLV_TAG_STRUC_wmi_bpf_set_supported_offload_bitmap_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param,
 } WMITLV_TAG_ID;
 /*
  * IMPORTANT: Please add _ALL_ WMI Commands Here.
@@ -2047,6 +2049,7 @@ typedef enum {
     OP(WMI_MLO_LINK_TTLM_COMPLETE_CMDID) \
     OP(WMI_BPF_SET_SUPPORTED_OFFLOAD_BITMAP_CMDID) \
     OP(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID) \
+    OP(WMI_PDEV_GET_ANI_ERR_CMDID) \
     /* add new CMD_LIST elements above this line */
 
 
@@ -2382,6 +2385,7 @@ typedef enum {
     OP(WMI_PDEV_WIFI_RADAR_CAPABILITIES_EVENTID) \
     OP(WMI_VDEV_VBSS_CONFIG_EVENTID) \
     OP(WMI_OPT_DP_DIAG_EVENTID) \
+    OP(WMI_PDEV_GET_ANI_ERR_EVENTID) \
     /* add new EVT_LIST elements above this line */
 
 
@@ -5774,6 +5778,10 @@ WMITLV_CREATE_PARAM_STRUC(WMI_BPF_SET_SUPPORTED_OFFLOAD_BITMAP_CMDID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param, wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID);
 
+/* Get ANI VREG ERR command */
+#define WMITLV_TABLE_WMI_PDEV_GET_ANI_ERR_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param, wmi_pdev_get_ani_err_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_ANI_ERR_CMDID);
 
 /************************** TLV definitions of WMI events *******************************/
 
@@ -7892,6 +7900,10 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_POWER_BOOST_EVENTID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_ARRAY_STRUC, wmi_scan_cache_info, scan_cache_info, WMITLV_SIZE_VAR)
 WMITLV_CREATE_PARAM_STRUC(WMI_SCAN_CACHE_RESULT_EVENTID);
 
+/* Get ANI VREG ERR Event */
+#define WMITLV_TABLE_WMI_PDEV_GET_ANI_ERR_EVENTID(id,op,buf,len)  \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param, wmi_pdev_get_ani_err_evt_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_ANI_ERR_EVENTID);
 
 #ifdef __cplusplus
 }

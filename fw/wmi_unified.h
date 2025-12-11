@@ -597,6 +597,8 @@ typedef enum {
     WMI_PDEV_POWER_BOOST_MEM_ADDR_CMDID,
     /* Set ACK/CTS response rate. */
     WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID,
+    /** Command to Get VREG Error values used for ANI */
+    WMI_PDEV_GET_ANI_ERR_CMDID,
 
 
     /* VDEV (virtual device) specific commands */
@@ -1911,6 +1913,8 @@ typedef enum {
      */
     WMI_PDEV_WIFI_RADAR_CAPABILITIES_EVENTID,
 
+    /* Event to Get VREG Error values used for ANI */
+    WMI_PDEV_GET_ANI_ERR_EVENTID,
 
     /* VDEV specific events */
     /** VDEV started event in response to VDEV_START request */
@@ -10013,6 +10017,13 @@ typedef enum {
 
     /* To enable/disable DFS radar detection for scan radio */
     WMI_PDEV_PARAM_ENABLE_SCAN_RADIO_DFS,
+    WMI_PDEV_PARAM_TX_RX_SWITCH_OVER,
+    WMI_PDEV_PARAM_PREAMBLE_PWR,
+    WMI_PDEV_PARAM_STOMPER_THRSHOLD,
+    WMI_PDEV_PARAM_AGC_GAIN_VALUE,
+    WMI_PDEV_PARAM_LSIG_RLSIG_POWER_SCALING,
+    WMI_PDEV_PARAM_HESIGA_POWER_SCALING,
+    WMI_PDEV_PARAM_PREAMBLE_POWER_REMOVAL,
 } WMI_PDEV_PARAM;
 
 #define WMI_PDEV_ONLY_BSR_TRIG_IS_ENABLED(trig_type) WMI_GET_BITS(trig_type, 0, 1)
@@ -38987,6 +38998,7 @@ static INLINE A_UINT8 *wmi_id_to_name(A_UINT32 wmi_command)
         WMI_RETURN_STRING(WMI_MLO_LINK_TTLM_COMPLETE_CMDID);
         WMI_RETURN_STRING(WMI_BPF_SET_SUPPORTED_OFFLOAD_BITMAP_CMDID);
         WMI_RETURN_STRING(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID);
+        WMI_RETURN_STRING(WMI_PDEV_GET_ANI_ERR_CMDID);
     }
 
     return (A_UINT8 *) "Invalid WMI cmd";
@@ -50565,6 +50577,59 @@ typedef struct {
     A_UINT32 status;
 } wmi_ocb_set_sched_event_fixed_param;
 
+typedef struct {
+    A_UINT32 tlv_header;    /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param */
+    A_UINT32 pdev_id;       /* PDEV ID set by the command */
+} wmi_pdev_get_ani_err_cmd_fixed_param;
+
+typedef struct {
+    A_UINT32 tlv_header;    /* TLV tag and len; tag equals WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param */
+    A_UINT32 pdev_id;       /* PDEV Id set by the command */
+
+    /* number of RXTD OFDMA OTA error counts except power surge and drop */
+    A_UINT32 rx_ofdma_phy_err_cnt;
+
+    /* rx_cck_fail_cnt:
+     * number of cck error counts due to rx reception failure because of
+     * timing error in cck
+     */
+    A_UINT32 rx_cck_phy_err_cnt;
+    A_UINT32 rx_cck1_phy_err_cnt;
+    A_UINT32 rx_cck2_phy_err_cnt;
+    A_UINT32 rx_cck7_phy_err_cnt;
+
+    /* lsig_phy_err_cnt
+     * LSIG Error count per source;
+     */
+    A_UINT32 lsig_phy_err_cnt;
+
+    /* scaled_err:
+     * This error takes into account all the above errors (ofdm_timing_err, cck_err, lsig_phy_err),
+     * adds weightage to it and decides whether desense is necessary or not
+     */
+    A_UINT32 scaled_err;
+
+    /* sizing:
+     * This is to account the sizing events occured in phy
+     */
+    A_UINT32 sizing;
+    /* phy_err_rate:
+     * This error takes into account the scaled error to listen time
+     */
+    A_UINT32 phy_err_rate;
+
+    /* Timestamp value when VREG error values are dumped
+     */
+    A_UINT32 timestamp_vreg;
+
+    /* Status WMI_RETURN_STRING(WMI_PDEV_GET_ANI_ERR_CMDID);
+
+     * 0 - Success
+     * 1 - Listen Time is small (Error)
+     * 2 - VREG values overflowed (Error)
+     */
+    A_UINT32 status;
+} wmi_pdev_get_ani_err_evt_fixed_param;
 /*****************************************************************************
  * END DEPRECATED
  */
