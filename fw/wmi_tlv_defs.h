@@ -1484,6 +1484,9 @@ typedef enum {
     WMITLV_TAG_STRUC_wmi_pdev_set_ack_cts_resp_rate_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param,
     WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_start_measure_ul_rtd_cmd_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_cmd_fixed_param,
+    WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_event_fixed_param,
 } WMITLV_TAG_ID;
 /*
  * IMPORTANT: Please add _ALL_ WMI Commands Here.
@@ -2050,6 +2053,8 @@ typedef enum {
     OP(WMI_BPF_SET_SUPPORTED_OFFLOAD_BITMAP_CMDID) \
     OP(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID) \
     OP(WMI_PDEV_GET_ANI_ERR_CMDID) \
+    OP(WMI_PDEV_START_MEASURE_UL_RTD_CMDID) \
+    OP(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID) \
     /* add new CMD_LIST elements above this line */
 
 
@@ -2386,6 +2391,7 @@ typedef enum {
     OP(WMI_VDEV_VBSS_CONFIG_EVENTID) \
     OP(WMI_OPT_DP_DIAG_EVENTID) \
     OP(WMI_PDEV_GET_ANI_ERR_EVENTID) \
+    OP(WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID) \
     /* add new EVT_LIST elements above this line */
 
 
@@ -5783,6 +5789,16 @@ WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_SET_ACK_CTS_RESP_RATE_CMDID);
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_cmd_fixed_param, wmi_pdev_get_ani_err_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_ANI_ERR_CMDID);
 
+/* Set RTD TIMING ERR command */
+#define WMITLV_TABLE_WMI_PDEV_START_MEASURE_UL_RTD_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_start_measure_ul_rtd_cmd_fixed_param, wmi_pdev_start_measure_ul_rtd_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_START_MEASURE_UL_RTD_CMDID);
+
+/* Get RTD TIMING ERR command */
+#define WMITLV_TABLE_WMI_PDEV_GET_MEASURED_UL_RTD_CMDID(id,op,buf,len) \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_cmd_fixed_param, wmi_pdev_get_measured_ul_rtd_cmd_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_MEASURED_UL_RTD_CMDID);
+
 /************************** TLV definitions of WMI events *******************************/
 
 /* Service Ready event */
@@ -7904,6 +7920,11 @@ WMITLV_CREATE_PARAM_STRUC(WMI_SCAN_CACHE_RESULT_EVENTID);
 #define WMITLV_TABLE_WMI_PDEV_GET_ANI_ERR_EVENTID(id,op,buf,len)  \
     WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_ani_err_evt_fixed_param, wmi_pdev_get_ani_err_evt_fixed_param, fixed_param, WMITLV_SIZE_FIX)
 WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_ANI_ERR_EVENTID);
+
+/* Get RTD Timing ERR Event */
+#define WMITLV_TABLE_WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID(id,op,buf,len)  \
+    WMITLV_ELEM(id,op,buf,len, WMITLV_TAG_STRUC_wmi_pdev_get_measured_ul_rtd_event_fixed_param, wmi_pdev_get_measured_ul_rtd_event_fixed_param, fixed_param, WMITLV_SIZE_FIX)
+WMITLV_CREATE_PARAM_STRUC(WMI_PDEV_GET_MEASURED_UL_RTD_EVENTID);
 
 #ifdef __cplusplus
 }

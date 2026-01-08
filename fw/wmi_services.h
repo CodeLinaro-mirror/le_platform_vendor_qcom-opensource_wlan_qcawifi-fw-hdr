@@ -701,6 +701,7 @@ typedef  enum  {
     WMI_SERVICE_APF_DATA_OFFLOAD_SUPPORT_ENABLED = 442, /* Indicates FW support for APFv6 handling offloads and disable QC data offloads */
     WMI_SERVICE_HALPHY_ANI_ERROR_SUPPORT = 443, /* Indicates FW supports HALPHY ANI error reporting */
     WMI_SERVICE_VDEV_PURE11AX_SUPPORT = 444, /* Indicates Pure11ax mode supported by FW */
+    WMI_SERVICE_PEER_UL_RTD_ESTIMATE = 445, /* Indicates UL RTD window start config supported by FW */
 
 
     WMI_MAX_EXT2_SERVICE
