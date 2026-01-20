@@ -702,6 +702,7 @@ typedef  enum  {
     WMI_SERVICE_HALPHY_ANI_ERROR_SUPPORT = 443, /* Indicates FW supports HALPHY ANI error reporting */
     WMI_SERVICE_VDEV_PURE11AX_SUPPORT = 444, /* Indicates Pure11ax mode supported by FW */
     WMI_SERVICE_PEER_UL_RTD_ESTIMATE = 445, /* Indicates UL RTD window start config supported by FW */
+    WMI_SERVICE_DCM_ULOFDMA_SUPPORT = 446, /* Support for DCM for ULOFDMA Transmission */
 
 
     WMI_MAX_EXT2_SERVICE
