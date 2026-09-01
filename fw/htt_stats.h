@@ -4647,6 +4647,8 @@ typedef struct {
     A_UINT32 tqm_enqueue_msdu_count;
     A_UINT32 tqm_dropped_msdu_count;
     A_UINT32 tqm_dequeue_msdu_count;
+    A_UINT32 remove_mpdu_ttl;
+    A_UINT32 remove_mpdu_ttl_cmd;
 } htt_stats_tx_tqm_pdev_tlv;
 /* preserve old name alias for new name consistent with the tag name */
 typedef htt_stats_tx_tqm_pdev_tlv htt_tx_tqm_pdev_stats_tlv_v;
